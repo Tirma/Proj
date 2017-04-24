@@ -14,16 +14,16 @@ int liste_vide(Liste liste)
     return 0;
 }
 
-void visualiser_liste(Liste liste)
-{
-    if(!liste_vide(liste))
-    {
-        affiche(&(liste->carte));
-        visualiser_liste(liste->suiv);
-    }
-}
+/* void visualiser_liste(Liste liste) */
+/* { */
+/*     if(!liste_vide(liste)) */
+/*     { */
+/*         affiche(&(liste->carte)); */
+/*         visualiser_liste(liste->suiv); */
+/*     } */
+/* } */
 
-Liste ajout_tete(CARTE carte, Liste liste)
+Liste ajout_tete(ARRETE arrete, Liste liste)
 {
     Liste elt = NULL;
     elt = calloc(1, sizeof(*elt));
@@ -32,7 +32,7 @@ Liste ajout_tete(CARTE carte, Liste liste)
         printf("Erreur calloc\n");
         return(liste);
     }
-    elt->carte = carte;
+    elt->arrete = arrete;
     elt->suiv = liste;
     return elt;
 }
@@ -52,12 +52,12 @@ Liste supprimer_tete(Liste liste)
         return liste;
     }
 }
-Liste ajout_queue(CARTE carte_add, Liste liste )
+Liste ajout_queue(ARRETE arrete_add, Liste liste )
 {
     Liste tete = liste;
     Liste elt = NULL;
-    elt = calloc(1,sizeof(Liste));
-    elt->carte = carte_add;
+    elt = calloc(1,sizeof(*elt));
+    elt->arrete = arrete_add;
     elt->suiv = NULL;
     if(liste_vide(liste))
     	return elt;
@@ -114,3 +114,10 @@ Liste copie(Liste l)
     }
     return cop;
 }
+
+Liste supprimer_liste(Liste l){
+  while(!liste_vide(l))
+    {
+      supprimer_tete(l);
+    }
+};

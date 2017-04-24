@@ -23,11 +23,11 @@ struct ARRETE {
 
 typedef struct ARRETE ARRETE;
 
-GRAPH creer_graph(void);
+GRAPH creer_graph(int taille);
 int graph_vide(GRAPH graph);
 GRAPH ajout_noeud(GRAPH graph, int numero, char[100] ville, int x, int y);
 GRAPH ajout_arrete(GRAPH noeud1, GRAPH noeud2, double arr, double cout, double pheromones);
-void supprimer_graph(GRAPH graph);
+void supprimer_graph(GRAPH graph, int taille);
 void afficher_graph(GRAPH graph);
 
 
