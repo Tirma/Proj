@@ -1,16 +1,9 @@
 #ifndef _LISTE
 #define _LISTE
 
-#include "NOEUD.h"
+#include "graph.h"
 
-struct ELEMENT {
-  ARRETE arrete;  
-  struct ELEMENT *suiv;
-};
 
-typedef struct ELEMENT ELEMENT;
-
-typedef ELEMENT* Liste;
 
 Liste creer_liste();
 int liste_vide(Liste liste);

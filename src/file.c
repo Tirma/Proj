@@ -1,6 +1,6 @@
-1#include <stdio.h>
-#include "liste.h"
-#include "file.h"
+#include <stdio.h>
+#include "../include/proj/liste.h"
+#include "../include/proj/file.h"
 #include <stdlib.h>
 
 File creer_file()
@@ -32,7 +32,7 @@ File enfiler(ARRETE* c, File f)
 {
   File elt = creer_file();
   elt=calloc(1,sizeof(File));
-  elt->arrete = c;
+  elt->arrete = *c;
   if(!file_vide(f))
   {
       elt->suiv = f->suiv;
@@ -45,7 +45,7 @@ File enfiler(ARRETE* c, File f)
   return f;
 }
 
-ARRETE* defiler(File * f)
+ARRETE defiler(File * f)
 {
   ARRETE c=(*f)->suiv->arrete;
   if((*f)->suiv == *f)

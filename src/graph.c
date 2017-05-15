@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../include/graph.h"
-#include "../include/liste.h"
+#include "../include/proj/liste.h"
+#include "../include/proj/graph.h"
+
 
 GRAPH creer_graph(int taille){
   GRAPH graph = calloc(taille, sizeof(NOEUD));
@@ -12,14 +13,18 @@ void supprimer_graph(GRAPH graph, int taille){
   int i;
   for(i=0;i<taille;i++)
     {
-      supprimer_liste(graph[i]->voisins);
+      supprimer_liste(graph[i].voisins);
     }
-  free graph;}
+}
 
 
 /* Affiche un graph*/
 void affiche_graph(GRAPH g, int taille){
-  printf("%d %s %d %d",g[i])
+  int i=1;
+  while(i!=taille)
+    {
+      printf("%d %s %d %d",g[i])
+    }
 }
 
 

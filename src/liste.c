@@ -1,4 +1,4 @@
-#include "liste.h"
+#include "../include/proj/liste.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,10 +19,10 @@ void visualiser_liste(Liste liste)
     if(!liste_vide(liste))
     {
       printf("-> %d %d %lf %lf\n",
-	     liste->arrete->numero,
-	     liste->arrete->arr,
-	     liste->arrete->cout,
-	     liste->arrete->pheromones);
+	     liste->arrete.numero,
+	     liste->arrete.arr,
+	     liste->arrete.cout,
+	     liste->arrete.pheromones);
         visualiser_liste(liste->suiv);
     }
 }
@@ -113,7 +113,7 @@ Liste copie(Liste l)
     Liste cop = creer_liste();
     while(!(liste_vide(l)))
     {
-        cop = ajout_queue(l->carte,cop);
+        cop = ajout_queue(l->arrete,cop);
         l = l->suiv;
     }
     return cop;
@@ -124,4 +124,5 @@ Liste supprimer_liste(Liste l){
     {
       supprimer_tete(l);
     }
+  return NULL;
 };
