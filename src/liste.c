@@ -14,14 +14,18 @@ int liste_vide(Liste liste)
     return 0;
 }
 
-/* void visualiser_liste(Liste liste) */
-/* { */
-/*     if(!liste_vide(liste)) */
-/*     { */
-/*         affiche(&(liste->carte)); */
-/*         visualiser_liste(liste->suiv); */
-/*     } */
-/* } */
+void visualiser_liste(Liste liste)
+{
+    if(!liste_vide(liste))
+    {
+      printf("-> %d %d %lf %lf\n",
+	     liste->arrete->numero,
+	     liste->arrete->arr,
+	     liste->arrete->cout,
+	     liste->arrete->pheromones);
+        visualiser_liste(liste->suiv);
+    }
+}
 
 Liste ajout_tete(ARRETE arrete, Liste liste)
 {

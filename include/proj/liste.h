@@ -14,7 +14,7 @@ typedef ELEMENT* Liste;
 
 Liste creer_liste();
 int liste_vide(Liste liste);
-//void visualiser_liste(Liste liste);
+void visualiser_liste(Liste liste);
 Liste ajout_tete(ARRETE arrete, Liste liste);
 Liste supprimer_tete(Liste liste);
 Liste ajout_queue(ARRETE arrete_add, Liste liste );
