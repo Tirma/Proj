@@ -1,9 +1,24 @@
 #ifndef _LISTE
 #define _LISTE
 
-#include "graph.h"
 
 
+struct ARRETE {
+  int numero; //numero de depart
+  int arr; //numero d arrive
+  double cout;
+  double pheromones;
+};
+
+typedef struct ARRETE ARRETE;
+struct ELEMENT {
+  ARRETE arrete;  
+  struct ELEMENT *suiv;
+};
+
+typedef struct ELEMENT ELEMENT;
+
+typedef ELEMENT* Liste;
 
 Liste creer_liste();
 int liste_vide(Liste liste);

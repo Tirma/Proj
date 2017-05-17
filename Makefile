@@ -1,6 +1,6 @@
 CC = clang
 LD = clang
-CFLAGS =
+CFLAGS = -g
 LFLAGS = 
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)

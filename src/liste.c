@@ -122,7 +122,7 @@ Liste copie(Liste l)
 Liste supprimer_liste(Liste l){
   while(!liste_vide(l))
     {
-      supprimer_tete(l);
+      l=supprimer_tete(l);
     }
   return NULL;
 };
