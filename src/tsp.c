@@ -65,7 +65,8 @@ double proba(int nbville,int depart,int arrive,GRAPH g, double alpha, double bet
   
 }
 
-/* choix_prochaine_ville(FOURMI ant, double alpha, double beta) */
-/* { */
-  
-/* } */
+void choix_prochaine_ville(FOURMI ant, double alpha, double beta,GRAPH g,int nbville)
+{
+  srand(time(NULL));
+  double tirage = rand()/RAND_MAX;
+}
