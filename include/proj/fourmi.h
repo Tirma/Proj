@@ -1,4 +1,5 @@
 #ifndef _FOURMI
+#include "file.h"
 #define _FOURMI
 
 struct FOURMI {
@@ -7,6 +8,6 @@ struct FOURMI {
   int ville_arrivee;
 };
 
-typedef FOURMI FOURMI;
+typedef struct FOURMI FOURMI;
 
 #endif
