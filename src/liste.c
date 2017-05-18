@@ -18,7 +18,7 @@ void visualiser_liste(Liste liste)
 {
     if(!liste_vide(liste))
     {
-      printf("-> %d %d %lf %lf\n",
+      printf("\t-> %d %d %lf %lf\n",
 	     liste->arrete.numero,
 	     liste->arrete.arr,
 	     liste->arrete.cout,
