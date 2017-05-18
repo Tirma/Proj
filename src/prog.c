@@ -41,6 +41,9 @@ int main(int argc, char* argv[])
     }
   
   affiche_graph(graph,nbsomm);
+
+  
+  
   supprimer_graph(graph,nbsomm);
 
   fclose(fichier);
