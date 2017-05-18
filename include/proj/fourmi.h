@@ -5,7 +5,7 @@
 struct FOURMI {
   File solution;
   int ville_depart;
-  int ville_arrivee;
+  int ville_courante;
 };
 
 typedef struct FOURMI FOURMI;
