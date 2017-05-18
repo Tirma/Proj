@@ -1,12 +1,12 @@
 CC = clang
 LD = clang
 CFLAGS = -g
-LFLAGS = 
+LFLAGS = -lm
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:.c=.o)
 
 exec : $(OBJ)
-	$(LD) $(LDFLAGS) $^ -o $@
+	$(LD) $(LFLAGS) $^ -o $@
 
 
 %.o : %.c

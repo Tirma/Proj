@@ -3,7 +3,7 @@
 #define _FOURMI
 
 struct FOURMI {
-  FILE* solution;
+  File solution;
   int ville_depart;
   int ville_arrivee;
 };
