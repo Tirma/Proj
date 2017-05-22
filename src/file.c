@@ -40,7 +40,7 @@ File enfiler(ARRETE* c, File f)
       f = elt;
   }
   else
-    {  elt->suiv = elt; f=elt;}
+    {  elt->suiv = f; f=elt;}
   
   return f;
 }

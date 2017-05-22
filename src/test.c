@@ -15,6 +15,10 @@ int main(int argc, char* argv[])
   int nbsomm, nbarr;
   char pwd[500];
   char ficname[500] = "fichier/";
+  
+  FOURMI ant;
+  ant.solution = creer_file();
+    
   getcwd(pwd, sizeof(pwd));
   FILE* fichier =NULL;
   strcat(ficname,name);
@@ -43,7 +47,7 @@ int main(int argc, char* argv[])
   graph[0].voisins->suiv->suiv->arrete.pheromones = 0.3;
   affiche_graph(graph,nbsomm);
   
-  FOURMI ant;
+
   ant.solution = enfiler(&(graph[0].voisins->suiv->arrete),ant.solution);
   ant.ville_depart = 2;
   ant.ville_courante = 0;
