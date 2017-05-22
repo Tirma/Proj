@@ -14,6 +14,24 @@
  
 /* ---- FONCTIONS PHEROMONES ---- */
 
+
+int is_in_tabu(FOURMI ant, int sommet)
+{
+  int isin = 0;
+  File mem = ant.solution;
+  while(!(file_vide(ant.solution)))
+    {
+      if(!file_vide(ant.solution) && (ant.solution->arrete.numero == sommet || ant.solution->arrete.arr == sommet))
+	{
+	  isin = 1;
+	  break;
+	}
+      ant.solution = ant.solution->suiv;
+    }
+  ant.solution = mem;
+  return isin;
+}
+
 void evaporer_pheromones(GRAPH g, int nbnoeud, double p)
 {
 	NOEUD noeud_courant;
