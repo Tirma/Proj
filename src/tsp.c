@@ -26,24 +26,24 @@ int is_in_tabu(FOURMI ant, int sommet)
   return isin;
 }
 
-void evaporer_feromones(GRAPH g, int nbnoeud, double p)
+void evaporer_pheromones(GRAPH g, int nbnoeud, double p)
 {
-	NOEUD * noeud_courant;
+	NOEUD noeud_courant;
 	Liste voisins_courants;
 	Liste tete_voisin;
 	int i,j; 
 	for(i=0;i<nbnoeud;i++)
 	{
-		noeud_courant = graph[i];
-		L_voisins_courants = noeud_courant->voisins;
-		tete_voisin = noeud_courant->voisins;
+		noeud_courant = g[i];
+		voisins_courants = noeud_courant.voisins;
+		tete_voisin = noeud_courant.voisins;
 		
-		while(!Liste_vide(L_voisins_courants))
+		while(!liste_vide(voisins_courants))
 		{
-			L_voins_courant->pheromones = p * L_voins_courant->pheromones;
-			L_voisins_courants=L_voisins_courants->suiv;
+			voisins_courants->arrete.pheromones = p * voisins_courants->arrete.pheromones;
+			voisins_courants=voisins_courants->suiv;
 		}
-		noeud_courant->voisin = tete_voisin->voisin;
+		noeud_courant.voisins = tete_voisin;
 	}
 }
 
