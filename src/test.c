@@ -45,6 +45,21 @@ int main(int argc, char* argv[])
   graph[0].voisins->arrete.pheromones = 0.5;
   graph[0].voisins->suiv->arrete.pheromones = 0.2;
   graph[0].voisins->suiv->suiv->arrete.pheromones = 0.3;
+
+
+  graph[1].voisins->arrete.pheromones = 0.1;
+  graph[1].voisins->suiv->arrete.pheromones = 0.25;
+  graph[1].voisins->suiv->suiv->arrete.pheromones = 0.33;
+
+
+  graph[2].voisins->arrete.pheromones = 0.2;
+  graph[2].voisins->suiv->arrete.pheromones = 0.4;
+  graph[2].voisins->suiv->suiv->arrete.pheromones = 0.6;
+
+
+  graph[3].voisins->arrete.pheromones = 0.8;
+  graph[3].voisins->suiv->arrete.pheromones = 0.9;
+  graph[3].voisins->suiv->suiv->arrete.pheromones = 0.01;
   affiche_graph(graph,nbsomm);
   
 
@@ -84,7 +99,10 @@ int main(int argc, char* argv[])
   chambe /=10000;
   printf("choix : Grenoble %lf StEtienne %lf Lyon %lf Chambery %lf\n10000 essais effectues\n\n",grenob, ste,lyon,chambe);
 
-  
+  evaporer_pheromones(graph,nbsomm,0.5);
+
+  printf("Les pheromones de chaques arretes doivent avoir etées divisées par deux\n\n");
+  affiche_graph(graph,nbsomm);
   
   supprimer_graph(graph,nbsomm);
 
