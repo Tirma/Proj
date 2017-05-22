@@ -3,17 +3,69 @@
 #include "../include/proj/tsp.h"
 
 
- File tsp() 
+File tsp(GRAPH g,int m,int nbsomm, int p, int MAX_CYCLE,int alpha, int beta) 
  { 
    File meilleur_chemin = creer_liste(); 
    float cout_meilleur_chemin = +INFINITY;
+   
+   FOURMI* tab_fourmi = calloc(m*nbsomm,sizeof(FOURMI));
+   initialisation_pheromones(g,nbsomm,p);
+   
+   int i,j;
+
+   for(i=0;i<MAX_CYCLE;i++)
+     {
+       tab_fourmi=initialisation_fourmis(tab_fourmi,nbsomm,m);
+       for(j=0;i<nbsomm*m;i++;)
+	 {
+	   while(choix_prochaine_ville(tab_fourmi[i],alpha,beta,g,nbsomm))
+	 }
+     }
+
+   return meilleur_chemin;
  } 
  
  
  
+FOURMI* initialisation_fourmis(FOURMI* tab, int nbsomm, int m)
+{
+  int i,j;
+  for(i=0;i<nbsomm;i++)
+    {
+      for(j=0;j<m;j++)
+	{
+	  tab[i].ville_courante = i;
+	  tab[i].depart = i;
+	  tab[i].solution = creer_file();
+	}
+    }
+  return tab;
+}
+
  
 /* ---- FONCTIONS PHEROMONES ---- */
 
+
+void initialisation_pheromones(GRAPH g, int nbnoeud, double p)
+{
+	NOEUD noeud_courant;
+	Liste voisins_courants;
+	Liste tete_voisin;
+	int i,j; 
+	for(i=0;i<nbnoeud;i++)
+	{
+		noeud_courant = g[i];
+		voisins_courants = noeud_courant.voisins;
+		tete_voisin = noeud_courant.voisins;
+		
+		while(!liste_vide(voisins_courants))
+		{
+			voisins_courants->arrete.pheromones = p;
+			voisins_courants=voisins_courants->suiv;
+		}
+		noeud_courant.voisins = tete_voisin;
+	}
+}
 
 int is_in_tabu(FOURMI ant, int sommet)
 {
@@ -31,6 +83,7 @@ int is_in_tabu(FOURMI ant, int sommet)
   ant.solution = mem;
   return isin;
 }
+
 
 void evaporer_pheromones(GRAPH g, int nbnoeud, double p)
 {
@@ -125,24 +178,5 @@ ARRETE * choix_prochaine_ville(FOURMI ant, double alpha, double beta,GRAPH g,int
     }
   return NULL;
 }
-
-
-int is_in_tabu(FOURMI ant, int sommet)
-{
-  int isin = 0;
-  File mem = ant.solution;
-  while(!(file_vide(ant.solution)))
-    {
-      if(!file_vide(ant.solution) && (ant.solution->arrete.numero == sommet || ant.solution->arrete.arr == sommet))
-	{
-	  isin = 1;
-	  break;
-	}
-      ant.solution = ant.solution->suiv;
-    }
-  ant.solution = mem;
-  return isin;
-}
-
 
 

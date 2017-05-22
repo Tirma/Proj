@@ -103,6 +103,12 @@ int main(int argc, char* argv[])
 
   printf("Les pheromones de chaques arretes doivent avoir etées divisées par deux\n\n");
   affiche_graph(graph,nbsomm);
+
+  
+  printf("\nToutes les pheromones à 0.5\n\n");
+  initialisation_pheromones(graph,nbsomm,0.5);
+  affiche_graph(graph,nbsomm);
+
   
   supprimer_graph(graph,nbsomm);
 
