@@ -3,28 +3,16 @@
 #include "../include/proj/tsp.h"
 
 
-/* File tsp() */
-/* { */
-/*   File meilleur_chemin = creer_liste(); */
-/*   float cout_meilleur_chemin = +INFINITY; */
-/* } */
-
-int is_in_tabu(FOURMI ant, int sommet)
-{
-  int isin = 0;
-  File mem = ant.solution;
-  while(!(file_vide(ant.solution)))
-    {
-      if(!file_vide(ant.solution) && (ant.solution->arrete.numero == sommet || ant.solution->arrete.arr == sommet))
-	{
-	  isin = 1;
-	  break;
-	}
-      ant.solution = ant.solution->suiv;
-    }
-  ant.solution = mem;
-  return isin;
-}
+ File tsp() 
+ { 
+   File meilleur_chemin = creer_liste(); 
+   float cout_meilleur_chemin = +INFINITY;
+ } 
+ 
+ 
+ 
+ 
+/* ---- FONCTIONS PHEROMONES ---- */
 
 void evaporer_feromones(GRAPH g, int nbnoeud, double p)
 {
@@ -46,6 +34,12 @@ void evaporer_feromones(GRAPH g, int nbnoeud, double p)
 		noeud_courant->voisin = tete_voisin->voisin;
 	}
 }
+
+
+
+
+
+/* ---- FONCTIONS CHEMIN ----*/
 
 double proba(int nbville,int depart,int arrive,GRAPH g, double alpha, double beta, FOURMI ant)
 {
@@ -113,3 +107,24 @@ ARRETE * choix_prochaine_ville(FOURMI ant, double alpha, double beta,GRAPH g,int
     }
   return NULL;
 }
+
+
+int is_in_tabu(FOURMI ant, int sommet)
+{
+  int isin = 0;
+  File mem = ant.solution;
+  while(!(file_vide(ant.solution)))
+    {
+      if(!file_vide(ant.solution) && (ant.solution->arrete.numero == sommet || ant.solution->arrete.arr == sommet))
+	{
+	  isin = 1;
+	  break;
+	}
+      ant.solution = ant.solution->suiv;
+    }
+  ant.solution = mem;
+  return isin;
+}
+
+
+
