@@ -84,7 +84,7 @@ double proba(int nbville,int depart,int arrive,GRAPH g, double alpha, double bet
 	    }
 	}
       prob*=1/sum ;
-  return prob;
+  return prob; //banane
    }
   
 }
