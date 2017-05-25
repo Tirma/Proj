@@ -1,7 +1,7 @@
 CC = clang
 LD = clang
 CFLAGS = -g
-LFLAGS = -lm
+LFLAGS = -lm -lSDL
 TST = $(wildcard src/[a-nq-z]*.c)
 SRC = $(wildcard src/[a-su-z]*.c src/tsp.c)
 OBJ = $(SRC:.c=.o)

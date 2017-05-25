@@ -3,7 +3,7 @@
 #include "../include/proj/tsp.h"
 
 
-File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,int alpha, int beta, double evap) 
+File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,double alpha, double beta, double evap) 
  { 
    File meilleur_chemin = creer_file(); 
    double cout_meilleur_chemin = +INFINITY;
@@ -13,43 +13,42 @@ File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,int alpha, int beta, 
    FOURMI* tab_fourmi = calloc(m*nbsomm,sizeof(FOURMI));
    initialisation_pheromones(g,nbsomm,p);
    ARRETE* arrete=NULL;
-   int i,j;
+   int i,j,k;
 
    for(i=0;i<MAX_CYCLE;i++)
      {
+       printf("Cycle %d sur %d\n",i+1,MAX_CYCLE);
        tab_fourmi=initialisation_fourmis(tab_fourmi,nbsomm,m);
-       for(j=0;i<nbsomm*m;i++)
+       for(j=0;j<nbsomm*m;j++)
 	 {
 	   cout = 0;
-	   while(choix_prochaine_ville(tab_fourmi[i],alpha,beta,g,nbsomm))
+	   while(choix_prochaine_ville(tab_fourmi[j],alpha,beta,g,nbsomm))
 	     {
-	       arrete=choix_prochaine_ville(tab_fourmi[i],alpha,beta,g,nbsomm);
-	       tab_fourmi[i].solution = enfiler(arrete,tab_fourmi[i].solution);
-	       cout+=arrete->cout;       	       
+	       arrete=choix_prochaine_ville(tab_fourmi[j],alpha,beta,g,nbsomm);
+	       tab_fourmi[j].solution = enfiler(arrete,tab_fourmi[j].solution);
+	       tab_fourmi[j].ville_courante = arrete->arr; 
+	       cout+=arrete->cout;
+	       if(cout>cout_meilleur_chemin)
+		 break;
 	     }
 	   if(cout_meilleur_chemin>cout)
 	     {
-	       meilleur_chemin = tab_fourmi[i].solution;
+	       meilleur_chemin = tab_fourmi[j].solution;
 	     }
 	 }
        evaporer_pheromones(g,nbsomm,p);
-       for(i=0;i<nbsomm*m;i++)
+       for(k=0;k<nbsomm*m;k++)
 	 {
 	   evaporer_pheromones(g,nbsomm,evap);
-	   memory = tab_fourmi[i].solution;
-	   while(!file_vide(tab_fourmi[i].solution))
+	   memory = tab_fourmi[k].solution;
+	   while(!file_vide(tab_fourmi[k].solution))
 	     {
-	       tab_fourmi[i].solution->arrete.pheromones += Q;
-	       tab_fourmi[i].solution = tab_fourmi[i].solution->suiv;
+	       tab_fourmi[k].solution->arrete.pheromones += Q;
+	       tab_fourmi[k].solution = tab_fourmi[k].solution->suiv;
 	     }
-	   tab_fourmi[i].solution = memory;
-	   //Suppression des fourmis
-	   while(!file_vide(tab_fourmi[i].solution))
-	     {
-	       defiler(tab_fourmi[i].solution);
-	     }
-	   
-	 }
+	   defiler(tab_fourmi[k].solution);
+	   tab_fourmi[k].solution =creer_file();
+        }
      }
    free(tab_fourmi);   
    return meilleur_chemin;

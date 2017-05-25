@@ -9,7 +9,7 @@
 #define _TSP
 
 
-File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,int alpha, int beta,double evap) ;
+File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,double alpha, double beta,double evap) ;
 FOURMI* initialisation_fourmis(FOURMI* tab, int nbsomm, int m);
 void initialisation_pheromones(GRAPH g, int nbnoeud, double p);
 void evaporer_pheromones(GRAPH g, int nbnoeud, double p);

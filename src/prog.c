@@ -4,13 +4,17 @@
 #include "../include/proj/tsp.h"
 #include <unistd.h>
 #include <string.h>
+#include <SDL/SDL.h>
+#include <SDL_phelma.h>
 
-#define alpha 1
-#define beta 2
-#define rho 0.5
+#define alpha 0.8
+#define beta 5.6
+#define rho 0.8
 #define epsilon 0.00001
-#define M 4
+#define M 2 //2 fourmis par sommet
 #define MAX_CYCLE 10
+
+void display(GRAPH g, File meilleur_chemin);
 
 int main(int argc, char* argv[])
 {
@@ -33,7 +37,7 @@ int main(int argc, char* argv[])
   fichier = fopen(ficname,"r");
   if(!fichier)
     {
-      printf("Erreur ouverture fichier %s/fichier/%s",pwd,ficname);
+      printf("Erreur ouverture fichier %s/%s",pwd,ficname);
       return EXIT_FAILURE;
     }
 
@@ -51,16 +55,27 @@ int main(int argc, char* argv[])
   affiche_graph(graph,nbsomm);
 
   File chemin = creer_file();
+  File mem = creer_file();
   chemin = tsp(graph,M,nbsomm,epsilon,MAX_CYCLE,alpha,beta,rho);
   ARRETE arrete;
-  printf("\n\n");
+  printf("\n\nChemin le plus court reliant tous les sommets :\n");
+  double cout = 0;
   while(!file_vide(chemin))
     {
-      arrete = defiler(chemin);
-      printf("%d %d ",arrete.numero,arrete.arr);
+      arrete = chemin->arrete;
+      mem = chemin;
+      cout += arrete.cout;
+      chemin = chemin->suiv;
+      free(mem);
+      printf("%d<--->",arrete.numero);
     }
+  printf("%d\n",arrete.arr);
+  printf("Cout : %lf",cout);
   printf("\n\n");
-    
+
+
+  display(graph,chemin);
+  
   supprimer_graph(graph,nbsomm);
 
   fclose(fichier);
@@ -68,4 +83,33 @@ int main(int argc, char* argv[])
 
   free(graph);
   return EXIT_SUCCESS;
+}
+
+void display(GRAPH g, File meilleur_chemin)
+{
+  int i = SDL_Init(SDL_INIT_VIDEO);
+  if(i==-1)
+    {
+      printf("Erreur démarage SDL : %s\n",SDL_GetError());
+      return;
+    }
+
+  
+
+  SDL_Event* event;
+  int quit = 0;
+  SDL_Surface *ecran = NULL;
+  ecran = SDL_SetVideoMode(650,650,32, SDL_SWSURFACE);
+  SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,255,255,255));
+  SDL_Flip(ecran);
+
+  SDL_RenderDrawLine();
+  
+  while(!quit)
+  {
+    if(SDL_QuitRequested())
+      quit = 1;
+  }
+  
+  SDL_Quit();
 }

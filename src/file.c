@@ -28,33 +28,19 @@ int file_vide(File f)
 
 File enfiler(ARRETE* c, File f)
 {
-  File elt = creer_file();
-  elt=calloc(1,sizeof(File));
-  elt->arrete = *c;
-  if(!file_vide(f))
-  {
-      elt->suiv = f->suiv;
-      f->suiv = elt;
-      f = elt;
-  }
-  else
-    {  elt->suiv = f; f=elt;}
-  
+  f = ajout_queue(*c,f);
   return f;
 }
 
 ARRETE defiler(File f)
 {
-  ARRETE c=f->suiv->arrete;
-  if(f->suiv == f)
+  File mem;
+  ARRETE c;
+  while(!file_vide(f))
     {
-      free(f);
-      f = creer_file();
-      return c;
+      mem = f;
+      f = f->suiv;
+      free(mem);
     }
-  File suiv = f->suiv->suiv;
-  File tofree = f->suiv;
-  f->suiv = suiv;
-  free(tofree);
   return c;
 }
