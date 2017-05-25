@@ -1,8 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../include/proj/graph.h"
+#include "../include/proj/tsp.h"
 #include <unistd.h>
 #include <string.h>
+
+#define alpha 1
+#define beta 2
+#define rho 0.5
+#define epsilon 0.00001
+#define M 4
+#define MAX_CYCLE 10
 
 int main(int argc, char* argv[])
 {
@@ -42,8 +50,17 @@ int main(int argc, char* argv[])
   
   affiche_graph(graph,nbsomm);
 
-  
-  
+  File chemin = creer_file();
+  chemin = tsp(graph,M,nbsomm,epsilon,MAX_CYCLE,alpha,beta,rho);
+  ARRETE arrete;
+  printf("\n\n");
+  while(!file_vide(chemin))
+    {
+      arrete = defiler(chemin);
+      printf("%d %d ",arrete.numero,arrete.arr);
+    }
+  printf("\n\n");
+    
   supprimer_graph(graph,nbsomm);
 
   fclose(fichier);

@@ -13,20 +13,18 @@ int file_vide(File f)
   return liste_vide(f);
 }
 
-/* void visualiser_file(File f) */
-/* { */
-/*   if(file_vide(f)) */
-/*     { */
-/*       printf("File vide\n"); */
-/*       return; */
-/*     } */
-/*   File adresse = f; */
-/*   do */
-/*   { */
-/*     affiche(&(f->suiv->carte)); */
-/*     f=f->suiv; */
-/*   }while(f!=adresse); */
-/* } */
+ void visualiser_file(File f) 
+ { 
+   if(file_vide(f)) 
+     { 
+       printf("File vide\n"); 
+       return; 
+     } 
+   File adresse = f; 
+   do{
+     f=f->suiv; 
+   }while(f!=adresse); 
+ } 
 
 File enfiler(ARRETE* c, File f)
 {
@@ -45,18 +43,18 @@ File enfiler(ARRETE* c, File f)
   return f;
 }
 
-ARRETE defiler(File * f)
+ARRETE defiler(File f)
 {
-  ARRETE c=(*f)->suiv->arrete;
-  if((*f)->suiv == *f)
+  ARRETE c=f->suiv->arrete;
+  if(f->suiv == f)
     {
-      free(*f);
-      *f = creer_file();
+      free(f);
+      f = creer_file();
       return c;
     }
-  File suiv = (*f)->suiv->suiv;
-  File tofree = (*f)->suiv;
-  (*f)->suiv = suiv;
+  File suiv = f->suiv->suiv;
+  File tofree = f->suiv;
+  f->suiv = suiv;
   free(tofree);
   return c;
 }

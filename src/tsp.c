@@ -3,30 +3,58 @@
 #include "../include/proj/tsp.h"
 
 
-File tsp(GRAPH g,int m,int nbsomm, int p, int MAX_CYCLE,int alpha, int beta) 
+File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,int alpha, int beta, double evap) 
  { 
-   File meilleur_chemin = creer_liste(); 
-   float cout_meilleur_chemin = +INFINITY;
+   File meilleur_chemin = creer_file(); 
+   double cout_meilleur_chemin = +INFINITY;
+   double cout=0;
+   File memory=creer_file();
    
    FOURMI* tab_fourmi = calloc(m*nbsomm,sizeof(FOURMI));
    initialisation_pheromones(g,nbsomm,p);
-   
+   ARRETE* arrete=NULL;
    int i,j;
 
    for(i=0;i<MAX_CYCLE;i++)
      {
        tab_fourmi=initialisation_fourmis(tab_fourmi,nbsomm,m);
-       for(j=0;i<nbsomm*m;i++;)
+       for(j=0;i<nbsomm*m;i++)
 	 {
+	   cout = 0;
 	   while(choix_prochaine_ville(tab_fourmi[i],alpha,beta,g,nbsomm))
+	     {
+	       arrete=choix_prochaine_ville(tab_fourmi[i],alpha,beta,g,nbsomm);
+	       tab_fourmi[i].solution = enfiler(arrete,tab_fourmi[i].solution);
+	       cout+=arrete->cout;       	       
+	     }
+	   if(cout_meilleur_chemin>cout)
+	     {
+	       meilleur_chemin = tab_fourmi[i].solution;
+	     }
+	 }
+       evaporer_pheromones(g,nbsomm,p);
+       for(i=0;i<nbsomm*m;i++)
+	 {
+	   evaporer_pheromones(g,nbsomm,evap);
+	   memory = tab_fourmi[i].solution;
+	   while(!file_vide(tab_fourmi[i].solution))
+	     {
+	       tab_fourmi[i].solution->arrete.pheromones += Q;
+	       tab_fourmi[i].solution = tab_fourmi[i].solution->suiv;
+	     }
+	   tab_fourmi[i].solution = memory;
+	   //Suppression des fourmis
+	   while(!file_vide(tab_fourmi[i].solution))
+	     {
+	       defiler(tab_fourmi[i].solution);
+	     }
+	   
 	 }
      }
-
+   free(tab_fourmi);   
    return meilleur_chemin;
  } 
- 
- 
- 
+
 FOURMI* initialisation_fourmis(FOURMI* tab, int nbsomm, int m)
 {
   int i,j;
@@ -35,7 +63,7 @@ FOURMI* initialisation_fourmis(FOURMI* tab, int nbsomm, int m)
       for(j=0;j<m;j++)
 	{
 	  tab[i].ville_courante = i;
-	  tab[i].depart = i;
+	  tab[i].ville_depart = i;
 	  tab[i].solution = creer_file();
 	}
     }

@@ -3,9 +3,14 @@
 #include "graph.h"
 #include <math.h>
 #include <time.h>
+
+#define Q 1
+
 #define _TSP
 
 
+File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,int alpha, int beta,double evap) ;
+FOURMI* initialisation_fourmis(FOURMI* tab, int nbsomm, int m);
 void initialisation_pheromones(GRAPH g, int nbnoeud, double p);
 void evaporer_pheromones(GRAPH g, int nbnoeud, double p);
 int is_in_tabu(FOURMI ant, int sommet);
