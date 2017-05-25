@@ -32,15 +32,14 @@ File enfiler(ARRETE* c, File f)
   return f;
 }
 
-ARRETE defiler(File f)
+int defiler(File f)
 {
   File mem;
-  ARRETE c;
   while(!file_vide(f))
     {
       mem = f;
       f = f->suiv;
       free(mem);
     }
-  return c;
+  return EXIT_SUCCESS;
 }

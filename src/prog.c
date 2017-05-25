@@ -4,7 +4,7 @@
 #include "../include/proj/tsp.h"
 #include <unistd.h>
 #include <string.h>
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <SDL_phelma.h>
 
 #define alpha 0.8
@@ -103,7 +103,7 @@ void display(GRAPH g, File meilleur_chemin)
   SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,255,255,255));
   SDL_Flip(ecran);
 
-  SDL_RenderDrawLine();
+  
   
   while(!quit)
   {

@@ -3,6 +3,7 @@
 #include "../include/proj/tsp.h"
 
 
+
 File tsp(GRAPH g,int m,int nbsomm, double p, int MAX_CYCLE,double alpha, double beta, double evap) 
  { 
    File meilleur_chemin = creer_file(); 
@@ -78,7 +79,7 @@ void initialisation_pheromones(GRAPH g, int nbnoeud, double p)
 	NOEUD noeud_courant;
 	Liste voisins_courants;
 	Liste tete_voisin;
-	int i,j; 
+	int i; 
 	for(i=0;i<nbnoeud;i++)
 	{
 		noeud_courant = g[i];
@@ -117,7 +118,7 @@ void evaporer_pheromones(GRAPH g, int nbnoeud, double p)
 	NOEUD noeud_courant;
 	Liste voisins_courants;
 	Liste tete_voisin;
-	int i,j; 
+	int i; 
 	for(i=0;i<nbnoeud;i++)
 	{
 		noeud_courant = g[i];
@@ -186,7 +187,6 @@ ARRETE * choix_prochaine_ville(FOURMI ant, double alpha, double beta,GRAPH g,int
   
   int j = ant.ville_courante;
   double tirage = rand()/(double)RAND_MAX;
-  double proba_cumul = 0;
   double fx = 0;
   int k;
   Liste arretes = creer_liste();
