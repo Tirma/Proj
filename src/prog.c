@@ -6,6 +6,7 @@
 #include <string.h>
 #include <SDL.h>
 #include <SDL_phelma.h>
+#include <SDL_ttf.h>
 
 #define alpha 0.8
 #define beta 5.6
@@ -14,7 +15,7 @@
 #define M 2 //2 fourmis par sommet
 #define MAX_CYCLE 10
 
-void display(GRAPH g, File meilleur_chemin);
+void display(GRAPH g, File meilleur_chemin, double cout);
 
 int main(int argc, char* argv[])
 {
@@ -60,21 +61,21 @@ int main(int argc, char* argv[])
   ARRETE arrete;
   printf("\n\nChemin le plus court reliant tous les sommets :\n");
   double cout = 0;
+  mem = chemin;
+
   while(!file_vide(chemin))
     {
       arrete = chemin->arrete;
-      mem = chemin;
       cout += arrete.cout;
       chemin = chemin->suiv;
-      free(mem);
       printf("%d<--->",arrete.numero);
     }
   printf("%d\n",arrete.arr);
   printf("Cout : %lf",cout);
   printf("\n\n");
 
+  display(graph,mem,cout);
 
-  display(graph,chemin);
   
   supprimer_graph(graph,nbsomm);
 
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-void display(GRAPH g, File meilleur_chemin)
+void display(GRAPH g, File meilleur_chemin, double cout)
 {
   int i = SDL_Init(SDL_INIT_VIDEO);
   if(i==-1)
@@ -95,12 +96,21 @@ void display(GRAPH g, File meilleur_chemin)
     }
 
   
-
-  SDL_Event* event;
   int quit = 0;
   SDL_Surface *ecran = NULL;
   ecran = SDL_SetVideoMode(650,650,32, SDL_SWSURFACE);
   SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,255,255,255));
+  
+  if(TTF_Init()==-1) 
+    {
+      printf("TTF_Init: %s\n", TTF_GetError());
+      exit(2);
+    }
+  TTF_Font* police = TTF_OpenFont("../fonts/impact.ttf",16);
+
+  
+  
+  
   SDL_Flip(ecran);
 
   
@@ -109,7 +119,9 @@ void display(GRAPH g, File meilleur_chemin)
   {
     if(SDL_QuitRequested())
       quit = 1;
+
+    
   }
-  
+  TTF_Quit();
   SDL_Quit();
 }
