@@ -98,7 +98,7 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
   
   int quit = 0;
   SDL_Surface *ecran = NULL, *Renderedtxt = NULL;
-  ecran = SDL_SetVideoMode(650,650,32, SDL_SWSURFACE);
+  ecran = SDL_SetVideoMode(700,700,32, SDL_SWSURFACE);
   SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,255,255,255));
   
   if(TTF_Init()==-1) 
