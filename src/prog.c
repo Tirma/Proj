@@ -15,7 +15,7 @@
 #define M 2 //2 fourmis par sommet
 #define MAX_CYCLE 10
 
-void display(GRAPH g, File meilleur_chemin, double cout);
+void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout);
 
 int main(int argc, char* argv[])
 {
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
   printf("Cout : %lf",cout);
   printf("\n\n");
 
-  display(graph,mem,cout);
+  display(graph,mem,nbsomm,cout);
 
   
   supprimer_graph(graph,nbsomm);
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
   return EXIT_SUCCESS;
 }
 
-void display(GRAPH g, File meilleur_chemin, double cout)
+void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
 {
   int i = SDL_Init(SDL_INIT_VIDEO);
   if(i==-1)
@@ -97,7 +97,7 @@ void display(GRAPH g, File meilleur_chemin, double cout)
 
   
   int quit = 0;
-  SDL_Surface *ecran = NULL;
+  SDL_Surface *ecran = NULL, *Renderedtxt = NULL;
   ecran = SDL_SetVideoMode(650,650,32, SDL_SWSURFACE);
   SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,255,255,255));
   
@@ -106,10 +106,65 @@ void display(GRAPH g, File meilleur_chemin, double cout)
       printf("TTF_Init: %s\n", TTF_GetError());
       exit(2);
     }
-  TTF_Font* police = TTF_OpenFont("../fonts/impact.ttf",16);
+  
+  TTF_Font* police = TTF_OpenFont("fonts/impact.ttf",18);
 
+  if(!police) {
+    printf("TTF_OpenFont: %s\n", TTF_GetError());
+  }
+
+  SDL_Color noir = {0,0,0};
   
+  SDL_Rect position;
   
+  char texte[100]= {};
+  File mem = creer_file();
+  for(i=0;i<nbsomm;i++)
+    {
+      strcpy(texte,g[i].ville);
+
+      Renderedtxt = TTF_RenderText_Blended(police,texte, noir);
+
+      position.x = g[i].x*650 - Renderedtxt->w/2;
+      position.y = g[i].y*650 - Renderedtxt->h/2;
+      
+      if(position.x<0)
+	{
+	  position.x = 0;
+	}
+      if(position.y<0)
+	{
+	  position.y = 0;
+	}
+      if(position.x + Renderedtxt->w/2 + 1 >650)
+	{
+	  position.x = 650 - Renderedtxt->w;
+	}
+      if(position.y + Renderedtxt->h/2 + 1 >650)
+	{
+	  position.y = 650 - Renderedtxt->h;
+	}
+
+      SDL_BlitSurface(Renderedtxt,NULL,ecran,&position);
+
+      mem = g[i].voisins;
+      while(!file_vide(g[i].voisins))
+	{
+	  Draw_Line(ecran,
+               g[i].x*650, g[i].y*650, g[g[i].voisins->arrete.arr].x*650, g[g[i].voisins->arrete.arr].y*650,
+		    SDL_MapRGBA(ecran->format,0,0,0,0));
+	  g[i].voisins = g[i].voisins->suiv;
+	}
+      g[i].voisins = mem;
+    }
+
+  while(!file_vide(meilleur_chemin))
+    {
+      Draw_Line(ecran,g[meilleur_chemin->arrete.numero].x*650,g[meilleur_chemin->arrete.numero].y*650,g[meilleur_chemin->arrete.arr].x*650,g[meilleur_chemin->arrete.arr].y*650,SDL_MapRGBA(ecran->format,255,0,0,0));
+      mem = meilleur_chemin;
+      meilleur_chemin = meilleur_chemin->suiv;
+      free(mem);
+    }
   
   SDL_Flip(ecran);
 
@@ -122,6 +177,10 @@ void display(GRAPH g, File meilleur_chemin, double cout)
 
     
   }
+
+  TTF_CloseFont(police);
+  SDL_FreeSurface(ecran);
+  SDL_FreeSurface(Renderedtxt);
   TTF_Quit();
   SDL_Quit();
 }
