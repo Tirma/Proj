@@ -113,8 +113,7 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
     printf("TTF_OpenFont: %s\n", TTF_GetError());
   }
 
-  SDL_Color noir = {0,0,0};
-  
+  SDL_Color noir = {0,0,0,0};
   SDL_Rect position;
   
   char texte[100]= {};
@@ -158,6 +157,8 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
       g[i].voisins = mem;
     }
 
+  
+
   while(!file_vide(meilleur_chemin))
     {
       Draw_Line(ecran,g[meilleur_chemin->arrete.numero].x*650,g[meilleur_chemin->arrete.numero].y*650,g[meilleur_chemin->arrete.arr].x*650,g[meilleur_chemin->arrete.arr].y*650,SDL_MapRGBA(ecran->format,255,0,0,0));
@@ -165,17 +166,23 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
       meilleur_chemin = meilleur_chemin->suiv;
       free(mem);
     }
+
+  char coutchar[50];
+  sprintf(coutchar,"%lf", cout); 
+
+  strcpy(texte,"Cout : ");
+  strcat(texte,coutchar);
+  Renderedtxt = TTF_RenderText_Blended(police,texte, noir);
+  position.x = 650/2 - Renderedtxt->w/2;
+  position.y = Renderedtxt->h;
+  SDL_BlitSurface(Renderedtxt,NULL,ecran,&position);
   
   SDL_Flip(ecran);
-
-  
   
   while(!quit)
   {
     if(SDL_QuitRequested())
-      quit = 1;
-
-    
+      quit = 1;    
   }
 
   TTF_CloseFont(police);
