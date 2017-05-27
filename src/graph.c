@@ -42,7 +42,7 @@ void affiche_graph(GRAPH g, int taille){
 }
 
 
-
+/* Ajout et initialisation d'un noeud dans le graph */  
 void ajout_noeud(GRAPH graph, int numero, char ville[100], double x, double y,int i){
   graph[i].numero = numero;
   strcpy(graph[i].ville,ville);
@@ -51,6 +51,7 @@ void ajout_noeud(GRAPH graph, int numero, char ville[100], double x, double y,in
   graph[i].voisins = creer_liste();
 }
 
+/* Ajoute et initialise une arrete a un noeud du graphe */
 GRAPH ajout_arrete(GRAPH graph,int noeud1, int noeud2, double cout, double pheromones){
    
   ARRETE arrete;
@@ -67,38 +68,38 @@ GRAPH ajout_arrete(GRAPH graph,int noeud1, int noeud2, double cout, double phero
 }
 
 
-
+/* Initialisation du graphe*/ 
 GRAPH initialiser_graph(FILE* fichier,GRAPH graph, int nbsomm,int nbarr)
 {
 
 
   char pwd[500];  
-  fgets(pwd,500,fichier);
+  fgets(pwd,500,fichier); // Lecture d'une ligne contenant le nombre de sommets et le nombre d arretes
   graph=creer_graph(nbsomm);
-  int i=0;
+  int i=0; 
   int numero;
   double x,y;
   char ville[100];
   int j;
-  while(i<nbsomm)
+  while(i<nbsomm) // Pour chaques lignes du fichier contenant les info sur les sommets
     {
-      fscanf(fichier,"%d %la %la ",&numero,&x,&y);
-      fgets(ville,99,fichier);
+      fscanf(fichier,"%d %la %la ",&numero,&x,&y); //lire une ligne de la forme entier double double espace
+      fgets(ville,99,fichier); // lecture de la fin de ligne contenant le nom du sommet
       j=0;
-      while(ville[j]!='\n')
+      while(ville[j]!='\n') // Suppression du carractere saut de ligne du nom du sommet
 	{j++;}
       ville[j]='\0';
-      ajout_noeud(graph,numero,ville,x,y,i);
+      ajout_noeud(graph,numero,ville,x,y,i); // On ajoute le noeud qui viens d etre lu
       i++;
     }
-  fgets(pwd,500,fichier);
+  fgets(pwd,500,fichier); // Lecture de la ligne suivante
 
   i = 0;
   int depart,arrive;
   double cout;
-  while(i<nbarr)
+  while(i<nbarr) // Pour chaque ligne du fichier contenant les info sur les arretes on effectue le meme algo
     {
-      fscanf(fichier,"%d %d %la ",&depart,&arrive,&cout);
+      fscanf(fichier,"%d %d %la ",&depart,&arrive,&cout); 
       ajout_arrete(graph,depart,arrive,cout,0);
       i++;
     }
