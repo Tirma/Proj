@@ -1,4 +1,4 @@
-# Proj
+# Projet d'informatique S2
 
 ## Compilation :
   make
