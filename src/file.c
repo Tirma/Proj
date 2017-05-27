@@ -32,6 +32,8 @@ File enfiler(ARRETE* c, File f)
   return f;
 }
 
+
+//La fonction défiler sert ici à supprimer la liste
 int defiler(File f)
 {
   File mem;
