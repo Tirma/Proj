@@ -19,7 +19,8 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout);
 
 int main(int argc, char* argv[])
 {
-  
+	
+/*============ Verefication de la syntaxe d appel du programme*/	
   if(argc!=2)
     {
       printf("\n\nsyntaxe : exec nom_fichier\n\n");
@@ -30,9 +31,9 @@ int main(int argc, char* argv[])
 
   
   int nbsomm, nbarr;
-  char pwd[500];
+  char pwd[500]; 
   char ficname[500] = "fichier/";
-  getcwd(pwd, sizeof(pwd));
+  getcwd(pwd, sizeof(pwd)); // recuperation du path working directory pour afficher des informations de debuguage
   FILE* fichier =NULL;
   strcat(ficname,name);
   fichier = fopen(ficname,"r");
@@ -42,27 +43,29 @@ int main(int argc, char* argv[])
       return EXIT_FAILURE;
     }
 
-  fscanf(fichier,"%d %d\n", &nbsomm,&nbarr);
+  fscanf(fichier,"%d %d\n", &nbsomm,&nbarr); //recuperation de la premiere ligne contenant le nombre de sommet et d aretes
 
+/*========= Creation et initialisation du graphe =========*/
   GRAPH graph=NULL;
-  graph = creer_graph(nbsomm);
+  graph = creer_graph(nbsomm); 
   graph = initialiser_graph(fichier,graph,nbsomm,nbarr);
   if(!graph)
     {
       printf("Graph creation error\n");
       return EXIT_FAILURE;
     }
-  
+/* =======================================================*/  
   affiche_graph(graph,nbsomm);
 
   File chemin = creer_file();
   File mem = creer_file();
-  chemin = tsp(graph,M,nbsomm,epsilon,MAX_CYCLE,alpha,beta,rho);
+  chemin = tsp(graph,M,nbsomm,epsilon,MAX_CYCLE,alpha,beta,rho); //Calcul du chemin de meilleur cout par l'algorithme de TSP
   ARRETE arrete;
   printf("\n\nChemin le plus court reliant tous les sommets :\n");
   double cout = 0;
   mem = chemin;
 
+/*================= Affichage du meilleur chemin en console ==================*/	
   while(!file_vide(chemin))
     {
       arrete = chemin->arrete;
@@ -73,7 +76,7 @@ int main(int argc, char* argv[])
   printf("%d\n",arrete.arr);
   printf("Cout : %lf",cout);
   printf("\n\n");
-
+/*================ Affichage graphique du graphe, du meilleur chemin, du cout ================*/
   display(graph,mem,nbsomm,cout);
 
   
@@ -88,20 +91,23 @@ int main(int argc, char* argv[])
 
 void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
 {
-  int i = SDL_Init(SDL_INIT_VIDEO);
+	
+/* Lancement de la SDL et verification de son bon lancement */
+  int i = SDL_Init(SDL_INIT_VIDEO); 
   if(i==-1)
     {
       printf("Erreur démarage SDL : %s\n",SDL_GetError());
       return;
     }
-
+/*========================================================*/
   
   int quit = 0;
   SDL_Surface *ecran = NULL, *Renderedtxt = NULL;
-  ecran = SDL_SetVideoMode(700,700,32, SDL_SWSURFACE);
-  SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,255,255,255));
+  ecran = SDL_SetVideoMode(700,700,32, SDL_SWSURFACE); //creation d une fenetre 700x700 couleur 32 bits
+  SDL_FillRect(ecran,NULL,SDL_MapRGB(ecran->format,255,255,255)); //remplissage en blanc de la fenetre
   
-  if(TTF_Init()==-1) 
+/* Lancement de SDL_TTF pour ecrire du texte dans la fenêtre */ 
+if(TTF_Init()==-1) 
     {
       printf("TTF_Init: %s\n", TTF_GetError());
       exit(2);
@@ -112,12 +118,15 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
   if(!police) {
     printf("TTF_OpenFont: %s\n", TTF_GetError());
   }
+/*========================================================*/
 
   SDL_Color noir = {0,0,0,0};
   SDL_Rect position;
   
   char texte[100]= {};
   File mem = creer_file();
+	
+/* Pour chaque sommet, calcul de sa position en veillant a ne pas sortir de la fenetre */
   for(i=0;i<nbsomm;i++)
     {
       strcpy(texte,g[i].ville);
@@ -143,9 +152,10 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
 	{
 	  position.y = 650 - Renderedtxt->h;
 	}
-
-      SDL_BlitSurface(Renderedtxt,NULL,ecran,&position);
-
+/*==================================================================================*/
+      SDL_BlitSurface(Renderedtxt,NULL,ecran,&position); //transfert du nom du sommet dans la fenetre
+	    
+/* Pour chaque arete tracer le chemin entre les deux sommets */
       mem = g[i].voisins;
       while(!file_vide(g[i].voisins))
 	{
@@ -157,16 +167,19 @@ void display(GRAPH g, File meilleur_chemin,int nbsomm, double cout)
       g[i].voisins = mem;
     }
 
-  
+  /*========================================================*/
 
-  while(!file_vide(meilleur_chemin))
+ 
+
+/* Tracer le meilleur chemin en rouge */
+while(!file_vide(meilleur_chemin))
     {
       Draw_Line(ecran,g[meilleur_chemin->arrete.numero].x*650,g[meilleur_chemin->arrete.numero].y*650,g[meilleur_chemin->arrete.arr].x*650,g[meilleur_chemin->arrete.arr].y*650,SDL_MapRGBA(ecran->format,255,0,0,0));
       mem = meilleur_chemin;
       meilleur_chemin = meilleur_chemin->suiv;
       free(mem);
     }
-
+/*==================================*/
   char coutchar[50];
   sprintf(coutchar,"%lf", cout); 
 
