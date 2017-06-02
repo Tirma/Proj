@@ -29,6 +29,7 @@ int main()
       return EXIT_FAILURE;
     }
 
+/*============================ Recuperation du fichier et initialisation du graphe ============================ */	
   fscanf(fichier,"%d %d\n", &nbsomm,&nbarr);
 
   GRAPH graph=NULL;
@@ -41,7 +42,8 @@ int main()
     }
   
 
-
+/*===============================================================================================================*/
+/* Initialisation des pheromones pour tester les fonctions d evaporation, proba et choix de ville suivante*/
   graph[0].voisins->arrete.pheromones = 0.5;
   graph[0].voisins->suiv->arrete.pheromones = 0.2;
   graph[0].voisins->suiv->suiv->arrete.pheromones = 0.3;
@@ -62,8 +64,8 @@ int main()
   graph[3].voisins->suiv->suiv->arrete.pheromones = 0.01;
   affiche_graph(graph,nbsomm);
   
-
-  ant.solution = enfiler(&(graph[0].voisins->suiv->arrete),ant.solution);
+/*===============================================================================================================*/
+  ant.solution = enfiler(&(graph[0].voisins->suiv->arrete),ant.solution); // creation et initialisation d'une fourmie
   ant.ville_depart = 2;
   ant.ville_courante = 0;
 
@@ -77,7 +79,7 @@ int main()
   double grenob = 0;
 
   srand(time(NULL));
-  
+/* Calcul des frequences effectives sur du choix des villes 10 000 essais pour verifier le fonctionnement de la fonction proba */  
   for(i=0;i<10000;i++)
     {
       arr = choix_prochaine_ville(ant,0.2,0.3,graph,4)->arr;
@@ -98,8 +100,8 @@ int main()
   lyon /= 10000;
   chambe /=10000;
   printf("choix : Grenoble %lf StEtienne %lf Lyon %lf Chambery %lf\n10000 essais effectues\n\n",grenob, ste,lyon,chambe);
-
-  evaporer_pheromones(graph,nbsomm,0.5);
+/*=============================================================================================================================*/
+  evaporer_pheromones(graph,nbsomm,0.5); //test de l'evaporation des pheromones
 
   printf("Les pheromones de chaques arretes doivent avoir etées divisées par deux\n\n");
   affiche_graph(graph,nbsomm);
